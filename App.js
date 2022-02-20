@@ -1,7 +1,8 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
+import ReduxThunk from "redux-thunk";
 
 import cartReducer from "./store/reducers/cart";
 import orderReducer from "./store/reducers/orders";
@@ -15,7 +16,7 @@ const rootReducer = combineReducers({
   orders: orderReducer,
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

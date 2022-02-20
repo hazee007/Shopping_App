@@ -6,7 +6,7 @@ import ProductDetails from "./ProductDetails";
 import { Colors } from "../utils";
 import { addToCart } from "../store/actions/cart";
 
-export default function ({ data, navigation }) {
+export default function ({ data, navigation, onRefresh, refreshing }) {
   const dispatch = useDispatch();
   const handleSelect = (itemData) => {
     navigation.navigate("ProductDetails", {
@@ -38,6 +38,8 @@ export default function ({ data, navigation }) {
   return (
     <View style={styles.screen}>
       <FlatList
+        onRefresh={onRefresh}
+        refreshing={refreshing}
         data={data}
         renderItem={renderMealItem}
         styles={{ width: "100%" }}
