@@ -1,8 +1,15 @@
 import React from "react";
-import { Platform } from "react-native";
-import { createAppContainer } from "react-navigation";
+import { Button, Platform, View } from "react-native";
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  SafeAreaView,
+} from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createDrawerNavigator } from "react-navigation-drawer";
+import {
+  createDrawerNavigator,
+  DrawerNavigatorItems,
+} from "react-navigation-drawer";
 import { Ionicons } from "@expo/vector-icons";
 
 import CartScreen from "../screens/CartScreen";
@@ -13,6 +20,10 @@ import ProductsOverviewScreen from "../screens/ProductsOverviewScreen";
 import { Colors } from "../utils";
 import UserProductScreen from "../screens/user/UserProductScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
+import AuthScreen from "../screens/user/AuthScreen";
+import StartUpScreen from "../screens/StartUpScreen";
+import { useDispatch } from "react-redux";
+import { logOut } from "../store/actions/auth";
 
 const defaultStackNavigationOptions = {
   headerStyle: {
@@ -93,7 +104,49 @@ const ShopsNavigator = createDrawerNavigator(
     contentOptions: {
       activeTintColor: Colors.primary,
     },
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      return (
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+            <DrawerNavigatorItems {...props} />
+            <View
+              style={{
+                height: "78%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                title="Logout"
+                color={Colors.primary}
+                onPress={() => {
+                  dispatch(logOut);
+                  // props.navigation.navigate("Auth");
+                }}
+              />
+            </View>
+          </SafeAreaView>
+        </View>
+      );
+    },
   }
 );
 
-export default createAppContainer(ShopsNavigator);
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: AuthScreen,
+  },
+  {
+    defaultNavigationOptions: defaultStackNavigationOptions,
+  }
+);
+
+const MainNavigator = createSwitchNavigator({
+  StartUp: StartUpScreen,
+  Auth: AuthNavigator,
+  Shop: ShopsNavigator,
+});
+
+export default createAppContainer(MainNavigator);

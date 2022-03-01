@@ -126,11 +126,6 @@ export default function EditProductScreen({ navigation }) {
     );
 
   return (
-    // <KeyboardAvoidingView
-    //   style={{ flex: 1 }}
-    //   behavior="padding"
-    //   keyboardVerticalOffset={50}
-    // >
     <ScrollView>
       <View style={styles.form}>
         <InputField
@@ -185,7 +180,6 @@ export default function EditProductScreen({ navigation }) {
         />
       </View>
     </ScrollView>
-    // </KeyboardAvoidingView>
   );
 }
 
